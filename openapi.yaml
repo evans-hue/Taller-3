@@ -1,0 +1,133 @@
+openapi: 3.0.0
+info:
+  title: Contacts API
+  version: 1.0.0
+  description: API simple para CRUD de contactos con subida de imágenes.
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /contacts:
+    get:
+      summary: Listar todos los contactos
+      responses:
+        '200':
+          description: Lista de contactos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+    post:
+      summary: Crear un contacto (multipart/form-data)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                lastname:
+                  type: string
+                phone:
+                  type: string
+                city:
+                  type: string
+                address:
+                  type: string
+                gender:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Contacto creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+
+  /contacts/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Obtener contacto por id
+      responses:
+        '200':
+          description: Contacto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '404':
+          description: No encontrado
+    put:
+      summary: Actualizar contacto (multipart/form-data opcional)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                lastname:
+                  type: string
+                phone:
+                  type: string
+                city:
+                  type: string
+                address:
+                  type: string
+                gender:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Contacto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+    delete:
+      summary: Eliminar contacto
+      responses:
+        '200':
+          description: Contacto eliminado
+
+components:
+  schemas:
+    Contact:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        lastname:
+          type: string
+        phone:
+          type: string
+        city:
+          type: string
+        address:
+          type: string
+        gender:
+          type: string
+        photo:
+          type: string
+          description: URL pública de la foto
+        created_at:
+          type: string
+          format: date-time
